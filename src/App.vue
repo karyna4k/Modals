@@ -3,11 +3,16 @@
     <div class="wrapper-content">
       <section>
         <div class="container">
-          <button class="btn btnPrimary" @click="modalFirst = !modalFirst">Show first modal</button>
+          <button class="btn btnPrimary" @click="modalFirst = !modalFirst">
+            Show first modal
+          </button>
 
           <!-- first modal -->
-          <Modal title="First modal" v-if="modalFirst">
-
+          <Modal
+            title="First modal"
+            v-if="modalFirst"
+            @close="modalFirst = !modalFirst"
+          >
           </Modal>
         </div>
       </section>
@@ -22,7 +27,7 @@ export default {
   components: { Modal },
   data() {
     return {
-      modalFirst: false
+      modalFirst: false,
     };
   },
 };
