@@ -10,9 +10,20 @@
           <!-- first modal -->
           <Modal
             title="First modal"
-            v-if="modalFirst"
+            v-show="modalFirst"
             @close="modalFirst = !modalFirst"
           >
+            <div slot="body">
+              <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Reiciendis eos quibusdam tenetur illum perspiciatis numquam
+                atque delectus dolorum minima facere assumenda, soluta debitis
+                voluptas deserunt eligendi quod fugit ullam aliquid.
+              </p>
+              <button class="btn btnPrimary" @click="modalFirst = !modalFirst">
+                Well done!
+              </button>
+            </div>
           </Modal>
         </div>
       </section>
