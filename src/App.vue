@@ -8,7 +8,7 @@
             Show first modal
           </button>
 
-          <Modal
+          <modal
             title="First modal"
             v-show="modalFirst"
             @close="modalFirst = false"
@@ -24,7 +24,7 @@
                 Well done!
               </button>
             </div>
-          </Modal>
+          </modal>
 
           <!-- second modal -->
           <button
@@ -34,7 +34,7 @@
             Show modal with form
           </button>
 
-          <Modal
+          <modal
             title="Modal with form"
             v-show="secondModal.show"
             @close="secondModal.show = false"
@@ -48,7 +48,18 @@
                 <button class="btn btnPrimary">Submit!</button>
               </form>
             </div>
-          </Modal>
+          </modal>
+
+          <!-- modal with validation -->
+          <button
+            class="btn btnPrimary"
+            @click="modalValidate = !modalValidate"
+          >
+            Show modal with form + validate
+          </button>
+
+          <modalValidate v-show="modalValidate" @click="modalValidate = false">
+          </modalValidate>
         </div>
       </section>
     </div>
@@ -56,10 +67,11 @@
 </template>
 
 <script>
-import Modal from "@/components/Modal.vue";
+import modal from "@/components/UI/Modal.vue";
+import modalValidate from "@/components/ModalValidate.vue";
 
 export default {
-  components: { Modal },
+  components: { modal, modalValidate },
   data() {
     return {
       modalFirst: false,
@@ -68,6 +80,7 @@ export default {
         name: "",
         email: "",
       },
+      modalValidate: false,
     };
   },
   methods: {
