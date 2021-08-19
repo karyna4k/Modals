@@ -58,7 +58,7 @@
             Show modal with form + validate
           </button>
 
-          <modalValidate v-show="modalValidate" @click="modalValidate = false">
+          <modalValidate v-show="modalValidate" @close="modalValidate = false">
           </modalValidate>
         </div>
       </section>
