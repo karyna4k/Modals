@@ -2,10 +2,23 @@
   <modal title="Modal with form + validate" @close="$emit('close')">
     <div slot="body">
       <form @submit.prevent="">
-        <label>Name:</label>
-        <input required type="text" />
-        <label>Email:</label>
-        <input required type="email" />
+        <!-- name -->
+        <div class="form-item" :class="{ errorInput: $v.name.$error }">
+          <label>Name:</label>
+          <p class="errorText" v-if="!$v.name.required">Filed is required!</p>
+          <p class="errorText" v-if="!$v.name.minLength">
+            Name must have at least {{ $v.name.$params.minLength.min }} !
+          </p>
+          <input
+            v-model="name"
+            :class="{ error: $v.name.$error }"
+            @change="$v.name.$touch()"
+          />
+        </div>
+        <div class="form-item">
+          <label>Email:</label>
+          <input v-bind="email" />
+        </div>
         <button class="btn btnPrimary">Submit!</button>
       </form>
     </div>
@@ -13,8 +26,43 @@
 </template>
 
 <script>
+import { required, minLength, email } from "vuelidate/lib/validators";
 import modal from "@/components/UI/Modal.vue";
 export default {
   components: { modal },
+  data() {
+    return {
+      name: "",
+      email: "",
+    };
+  },
+  validations: {
+    name: {
+      required,
+      minLength: minLength(4),
+    },
+    email: {
+      required,
+      email,
+    },
+  },
 };
 </script>
+<style lang="scss">
+.form-item .errorText {
+  display: none;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: red;
+}
+
+.form-item {
+  &.errorInput .errorText {
+    display: block;
+  }
+}
+
+input.error {
+  border-color: red;
+}
+</style>
