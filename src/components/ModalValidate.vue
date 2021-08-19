@@ -7,7 +7,7 @@
           <label>Name:</label>
           <p class="errorText" v-if="!$v.name.required">Filed is required!</p>
           <p class="errorText" v-if="!$v.name.minLength">
-            Name must have at least {{ $v.name.$params.minLength.min }} !
+            Name must have at least {{ $v.name.$params.minLength.min }}!
           </p>
           <input
             v-model="name"
@@ -26,6 +26,40 @@
             @change="$v.email.$touch()"
           />
         </div>
+        <!-- password -->
+        <div class="form-item" :class="{ errorInput: $v.password.$error }">
+          <label>Password:</label>
+          <p class="errorText" v-if="!$v.password.required">
+            Filed is required!
+          </p>
+          <p class="errorText" v-if="!$v.password.minLength">
+            Password must have at least
+            {{ $v.password.$params.minLength.min }}!
+          </p>
+          <input
+            v-model.trim="password"
+            :class="{ error: $v.password.$error }"
+            @change="$v.password.$touch()"
+          />
+        </div>
+        <!-- repeat password -->
+        <div
+          class="form-item"
+          :class="{ errorInput: $v.repeatPassword.$error }"
+        >
+          <label>Repeat password:</label>
+          <p class="errorText" v-if="!$v.repeatPassword.required">
+            Filed is required!
+          </p>
+          <p class="errorText" v-if="!$v.repeatPassword.sameAsPassword">
+            Passwords must be identical.
+          </p>
+          <input
+            v-model.trim="repeatPassword"
+            :class="{ error: $v.repeatPassword.$error }"
+            @change="$v.repeatPassword.$touch()"
+          />
+        </div>
         <!-- button -->
         <button class="btn btnPrimary">Submit!</button>
       </form>
@@ -34,7 +68,7 @@
 </template>
 
 <script>
-import { required, minLength, email } from "vuelidate/lib/validators";
+import { required, minLength, sameAs, email } from "vuelidate/lib/validators";
 import modal from "@/components/UI/Modal.vue";
 export default {
   components: { modal },
@@ -42,6 +76,8 @@ export default {
     return {
       name: "",
       email: "",
+      password: "",
+      repeatPassword: "",
     };
   },
   validations: {
@@ -53,6 +89,14 @@ export default {
       required,
       email,
     },
+    password: {
+      required,
+      minLength: minLength(6),
+    },
+    repeatPassword: {
+      required,
+      sameAsPassword: sameAs("password"),
+    },
   },
   methods: {
     onSubmit() {
@@ -61,10 +105,13 @@ export default {
         const user = {
           name: this.name,
           email: this.email,
+          password: this.password,
         };
         console.log(user);
         this.name = "";
         this.email = "";
+        this.password = "";
+        this.repeatPassword = "";
         this.$v.$reset();
         this.$emit("close");
       }
